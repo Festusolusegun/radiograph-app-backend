@@ -118,8 +118,34 @@ const radiographSchema = new mongoose.Schema({
   },
 });
 
-// Update the updatedAt field before saving
+// 🎯 ADDED: Pre-save middleware for enum conversion and compatibility
 radiographSchema.pre('save', function (next) {
+  // Convert enum fields to lowercase to handle both app versions
+  if (this.sex) {
+    this.sex = this.sex.toLowerCase();
+  }
+  if (this.pathomechanism) {
+    this.pathomechanism = this.pathomechanism.toLowerCase();
+  }
+  if (this.xrayType) {
+    this.xrayType = this.xrayType.toLowerCase();
+  }
+  if (this.xrayPattern) {
+    this.xrayPattern = this.xrayPattern.toLowerCase();
+  }
+  if (this.injuryType) {
+    this.injuryType = this.injuryType.toLowerCase();
+  }
+  if (this.injuryCount) {
+    this.injuryCount = this.injuryCount.toLowerCase();
+  }
+  
+  // Also handle site field if present
+  if (this.site) {
+    this.site = this.site.toLowerCase();
+  }
+  
+  // Update timestamp
   this.updatedAt = Date.now();
   next();
 });
