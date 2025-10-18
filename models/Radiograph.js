@@ -6,19 +6,12 @@ const radiographSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  
+  // === RADIOGRAPH/INJURY DATA (Required) ===
   patientName: {
     type: String,
     required: true,
   },
-  images: [{
-    url: String,
-    filename: String,
-    uploadedAt: {
-      type: Date,
-      default: Date.now,
-    },
-  }],
-  // Patient Information
   age: {
     type: Number,
     required: true,
@@ -28,7 +21,6 @@ const radiographSchema = new mongoose.Schema({
     enum: ['male', 'female'],
     required: true,
   },
-  // Injury Information
   pathomechanism: {
     type: String,
     enum: ['fall', 'motorcycle_rta', 'mva', 'sport', 'gunshot', 'assault', 'others'],
@@ -65,7 +57,43 @@ const radiographSchema = new mongoose.Schema({
     type: String,
     maxlength: 500,
   },
-  // Follow-up tracking
+  
+  // === SURGICAL DATA (Optional) ===
+  patientId: String,
+  diagnosis: String,
+  procedureType: {
+    type: String,
+    enum: ['Operative', 'Non-Operative', 'Pending'],
+  },
+  // Operative Procedure Details
+  anesthesiaType: String,
+  tourniquetUse: String,
+  antibioticUse: String,
+  preopComorbidities: [String],
+  estimatedBloodLoss: String,
+  intraopBloodTransfusion: String,
+  durationOfSurgery: String,
+  complicationIntraop: String,
+  durationOfHospitalStay: String,
+  dischargeAmbulatoryStatus: String,
+  // Non-Operative Details
+  nonOperativeType: String,
+  castType: String,
+  braceType: String,
+  analgesicGrade: String,
+  // Pending cases
+  pendingReason: String,
+  plannedProcedure: String,
+
+  // Images and follow-up tracking
+  images: [{
+    url: String,
+    filename: String,
+    uploadedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  }],
   isFollowUp: {
     type: Boolean,
     default: false,
@@ -78,6 +106,7 @@ const radiographSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Radiograph',
   }],
+  
   // Metadata
   createdAt: {
     type: Date,
